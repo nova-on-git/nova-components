@@ -1,5 +1,5 @@
 <template>
-    <button @click="toggleDrop(), toggleModal()" class="btn">
+    <anchor @click="toggleDrop(), toggleModal()" :to="props.to" class="btn" :class="preset">
 
         <!-- Loader -->
         <component 
@@ -42,20 +42,22 @@
             :is="component" 
             :key="index"
         />
-    </button>
+    </anchor>
 
 
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 const slots = useSlots()
 const dropActive = ref(false)
 
 const props = defineProps({
     id: "btn",
-    type: String,
+
+    to: String,
+    preset: String,
     useParentSlots: {
         type: Boolean,
         default: false
@@ -73,12 +75,11 @@ const props = defineProps({
     }
 })
 
-
 const components = computed(() => {
     // Get the list of components from slots
     let componentsList = props.useParentSlots 
         ? slots.default()[0]?.children || []
-        : slots.default() || [];
+        : slots.default() || []
     
     // Filter out 'fore', 'aft', and 'loader' components
     const filteredComponents = componentsList.filter((component) => {
@@ -88,11 +89,11 @@ const components = computed(() => {
             component.type?.__name === 'loader' ||
             component.type?.__name === 'drop' 
 
-        );
-    });
+        )
+    })
     
     return filteredComponents;
-});
+})
 const dropComponents = computed(() => {
     let componentsList
 
@@ -164,8 +165,6 @@ function toggleDrop() {
 // console.log(dropComponents.value[0].props)
 </script>
 
-
-
 <style scoped lang="sass">
 .btn
     position: relative
@@ -173,8 +172,10 @@ function toggleDrop() {
     align-items: center
     gap: 5px
 
-    padding: 4px 20px
-    border-radius: 5px
+    padding: 2px 15px
+    min-height: 25px
+    min-width: 2rem
+    border-radius: 2px
     background: inherit
     border: 1px solid grey
     cursor: pointer
@@ -184,6 +185,78 @@ function toggleDrop() {
     
     &:active
         transform: translate(1px, 1px)  
+
+    &.primary
+        background: #007bff
+        border-color: #007bff
+        color: white
+
+        &:hover
+            background: lighten(#007bff, 10%)
+            border-color: lighten(#007bff, 10%)
+
+    &.secondary
+        background: #6c757d
+        border-color: #6c757d
+        color: white
+
+        &:hover
+            background: lighten(#6c757d, 10%)
+            border-color: lighten(#6c757d, 10%)
+
+    &.success
+        background: #28a745
+        border-color: #28a745
+        color: white
+
+        &:hover
+            background: lighten(#28a745, 10%)
+            border-color: lighten(#28a745, 10%)
+
+    &.danger
+        background: #dc3545
+        border-color: #dc3545
+        color: white
+
+        &:hover
+            background: lighten(#dc3545, 10%)
+            border-color: lighten(#dc3545, 10%)
+
+    &.warning
+        background: #ffc107
+        border-color: #ffc107
+        color: black
+
+        &:hover
+            background: lighten(#ffc107, 10%)
+            border-color: lighten(#ffc107, 10%)
+
+    &.info
+        background: #17a2b8
+        border-color: #17a2b8
+        color: white
+
+        &:hover
+            background: lighten(#17a2b8, 10%)
+            border-color: lighten(#17a2b8, 10%)
+
+    &.light
+        background: #f8f9fa
+        border-color: #f8f9fa
+        color: black
+
+        &:hover
+            background: lighten(#f8f9fa, 10%)
+            border-color: lighten(#f8f9fa, 10%)
+
+    &.dark
+        background: #343a40
+        border-color: #343a40
+        color: white
+
+        &:hover
+            background: lighten(#343a40, 10%)
+            border-color: lighten(#343a40, 10%)
 
 .drop
     position: absolute
