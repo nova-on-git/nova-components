@@ -1,7 +1,7 @@
 <template>
     <main>
 
-        <btn>Button</btn>
+        <btn preset="primary">Button</btn>
 
     </main>
 </template>
