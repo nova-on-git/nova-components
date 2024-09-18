@@ -1,5 +1,5 @@
 <template>
-    <button @click="handleClick()"  class="btn"     :class="preset">
+    <button @click="handleClick()"  class="btn" :class="preset">
 
         <anchor v-show="false" :to="props.to"   />
         <!-- Loader -->
@@ -50,35 +50,38 @@
 </template>
 
 <script setup lang="ts">
+import { toggleModal } from '../composables/modal';
+
 const router = useRouter()
 const slots = useSlots()
 const dropActive = ref(false)
 
-const props = defineProps({
-    id: "btn",
+const props = defineProps<{
+    compId: "btn",
 
-    to: String,
-    preset: String,
-    useParentSlots: {
+    to?: String,
+    preset: "primary" | "secondary" | "success" | "danger" | "info" | "warning" | "light" | "dark",
+    useParentSlots?: {
         type: Boolean,
         default: false
     },
 
     // Toggles a given ID //
-    modal: {
-        type: String,
-        default: "",
-    },
+    modal?: String,
 
-    loading: {
+    loading?: {
         type: Boolean,
         default: false
     }
-})
+}>()
 
 function handleClick() {
     toggleDrop()
-    toggleModal()
+
+    if (props.modal) {
+        toggleModal(props.modal)
+    }
+
     if (props.to) {
         router.push(props.to)
     }
@@ -156,16 +159,7 @@ const loaderComponents = computed(() => {
     })
 })
 
-const toggleModal = () => {
-    const modal = document.getElementById(props.modal)
-    if (modal) {
-        if (modal.style.display === "block") {
-            modal.style.display = "none"
-        } else {
-            modal.style.display = "block"
-        }
-    }
-}
+
 
 function toggleDrop() {
     dropActive.value = !dropActive.value

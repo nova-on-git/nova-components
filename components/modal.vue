@@ -1,5 +1,5 @@
 <template>
-  <div ref="modal" class="modal-background" @click="toggleModal">
+  <div ref="modal" class="modal-background" @click="close">
     
     <div class="modal-position">
       <div @click.stop>
@@ -15,12 +15,12 @@ const modal = ref(null);
 
 const close = () => {
     if (modal.value) {
-        modal.value.style.display = 'none';
+        modal.value.classList.remove('active')
     }
 }
 const open = () => {
     if (!modal.value) {
-        modal.value.style.display = 'block';
+        modal.value.classList.open('active')
     }
 }
 
@@ -28,15 +28,6 @@ defineExpose({
   close,
   open
 })
-
-const toggleModal = () => {
-  console.log('here');
-  if (modal.value) {
-    modal.value.style.display = modal.value.style.display === 'block' ? 'none' : 'block';
-  }
-};
-
-
 
 </script>
 
@@ -52,10 +43,16 @@ const toggleModal = () => {
     backdrop-filter: blur(5px)
     display: none
 
+    &.active
+        display: block
+
     .modal-position
         display: flex
         align-items: center
         justify-content: center
         height: 100%
         width: 100%
+
+
+
 </style>
