@@ -1,6 +1,7 @@
 <template>
-    <anchor @click="toggleDrop(), toggleModal()" :to="props.to" class="btn" :class="preset">
+    <button @click="handleClick()"  class="btn"     :class="preset">
 
+        <anchor v-show="false" :to="props.to"   />
         <!-- Loader -->
         <component 
             v-if="props.loading"
@@ -42,14 +43,14 @@
             :is="component" 
             :key="index"
         />
-    </anchor>
+    </button>
 
 
 
 </template>
 
 <script setup lang="ts">
-
+const router = useRouter()
 const slots = useSlots()
 const dropActive = ref(false)
 
@@ -74,6 +75,14 @@ const props = defineProps({
         default: false
     }
 })
+
+function handleClick() {
+    toggleDrop()
+    toggleModal()
+    if (props.to) {
+        router.push(props.to)
+    }
+}
 
 const components = computed(() => {
     // Get the list of components from slots

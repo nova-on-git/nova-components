@@ -2,13 +2,14 @@
     <div class="breadcrumbs">
 
         <anchor 
-            v-for="(link, index) in props.links"
+            v-for="(link, index) in path"
             :to="link.url"
+            :key="index"
         >
-            <div :class="{'hover': index != props.links.length - 1, 'no-link': index === props.links.length - 1}">{{ link.name }}</div>
+            <div :class="{'hover': index != path.length - 1, 'no-link': index === path.length - 1}">{{ link.name }}</div>
 
             <span 
-                v-if="index != props.links.length - 1"
+                v-if="index != path.length - 1"
                 class="delimiter"
             >
                 {{ props.delimiter }}
@@ -18,14 +19,33 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+const router = useRouter() 
+
 const props = defineProps({
     id: "breadcrumbs",
     delimiter: {
         type: String,
         default: "/"
     },
-    links: Array
+    links: {
+        type: Array as () => Array<{ name: string, url: string }>,
+        default: () => []
+    }
+})
+
+
+const path = computed(() => {
+    
+    if (props.links.length > 0) return props.links
+
+    const currentPath = router.currentRoute.value.path
+    const segments = currentPath.split(props.delimiter).filter(segment => segment)
+
+    return segments.map((segment, index) => ({
+        name: segment,
+        url: `/${segments.slice(0, index + 1).join(props.delimiter)}` 
+    }))
 })
 
 </script>
