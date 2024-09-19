@@ -61,9 +61,8 @@ onUnmounted(() => {
     transform: translate(-50%, -50%)
 
     &.nuxt
-        height: 200px
-        width: 200px
-        background: rgba(52, 78, 199, 1)
+        height: 500px
+        width: 500px
         -webkit-filter: blur(100px)
 
 </style>

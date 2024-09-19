@@ -1,76 +1,75 @@
 <template>
-    <button @click="handleClick()"  class="btn" :class="preset">
-
-        <anchor v-show="false" :to="props.to"   />
+    <button @click="handleClick()" class="btn" :class="preset">
+        <anchor v-show="false" :to="props.to" />
         <!-- Loader -->
-        <component 
+        <component
             v-if="props.loading"
-            v-for="(component, index) in loaderComponents" 
-            :is="component" :key="index" 
+            v-for="(component, index) in loaderComponents"
+            :is="component"
+            :key="index"
         />
-        <loader v-if="props.loading && !loaderComponents.length" color="white" width="20px"/>
+        <loader v-if="props.loading && !loaderComponents.length" color="white" width="20px" />
 
         <!-- Fore -->
-        <component 
-            v-if="!props.loading" 
-            v-for="(component, index) in foreComponents" 
-            :is="component" 
+        <component
+            v-if="!props.loading"
+            v-for="(component, index) in foreComponents"
+            :is="component"
             :key="index"
         />
 
         <!-- Content -->
-        <component 
-            v-if="!props.loading && components.length" 
-            v-for="(component, index) in components" 
-            :is="component" 
-            :key="index" 
+        <component
+            v-if="!props.loading && components.length"
+            v-for="(component, index) in components"
+            :is="component"
+            :key="index"
         />
         <div v-if="!props.loading && !components.length">Submit</div>
 
         <!-- Aft -->
-        <component 
-            v-if="!props.loading" 
-            v-for="(component, index) in aftComponents" 
-            :is="component" 
+        <component
+            v-if="!props.loading"
+            v-for="(component, index) in aftComponents"
+            :is="component"
             :key="index"
         />
 
         <!-- Drop -->
-        <component 
+        <component
             class="drop"
-            v-show="!props.loading && dropActive" 
-            v-for="(component, index) in dropComponents" 
-            :is="component" 
+            ref="drop"
+            v-show="!props.loading && dropActive"
+            v-for="(component, index) in dropComponents"
+            :is="component"
             :key="index"
         />
     </button>
-
-
-
 </template>
 
 <script setup lang="ts">
-import { toggleModal } from '../composables/modal';
-
+import { toggleModal } from "../composables/modal"
+import { onClickOutside } from "@vueuse/core"
+const drop = ref(null)
 const router = useRouter()
 const slots = useSlots()
 const dropActive = ref(false)
 
 const props = defineProps<{
-    compId: "btn",
+    compId: "btn"
 
-    to?: String,
-    preset: "primary" | "secondary" | "success" | "danger" | "info" | "warning" | "light" | "dark",
+    to?: String
+    preset: "primary" | "secondary" | "success" | "danger" | "info" | "warning" | "light" | "dark"
     useParentSlots?: {
-        type: Boolean,
+        type: Boolean
         default: false
-    },
+    }
 
     // Toggles a given ID //
-    modal?: String,
+    modal?: String
 
     loading?: {
-        type: Boolean,
+        type: Boolean
         default: false
     }
 }>()
@@ -86,25 +85,24 @@ function handleClick() {
         router.push(props.to)
     }
 }
-
+onClickOutside(drop, () => [closeDrop()])
 const components = computed(() => {
     // Get the list of components from slots
-    let componentsList = props.useParentSlots 
+    let componentsList = props.useParentSlots
         ? slots.default()[0]?.children || []
         : slots.default() || []
-    
+
     // Filter out 'fore', 'aft', and 'loader' components
     const filteredComponents = componentsList.filter((component) => {
         return !(
-            component.type?.__name === 'fore' ||
-            component.type?.__name === 'aft' ||
-            component.type?.__name === 'loader' ||
-            component.type?.__name === 'drop' 
-
+            component.type?.__name === "fore" ||
+            component.type?.__name === "aft" ||
+            component.type?.__name === "loader" ||
+            component.type?.__name === "drop"
         )
     })
-    
-    return filteredComponents;
+
+    return filteredComponents
 })
 const dropComponents = computed(() => {
     let componentsList
@@ -116,7 +114,7 @@ const dropComponents = computed(() => {
     }
 
     return componentsList.filter((component) => {
-        return component.type?.__name === 'drop'
+        return component.type?.__name === "drop"
     })
 })
 const foreComponents = computed(() => {
@@ -129,7 +127,7 @@ const foreComponents = computed(() => {
     }
 
     return componentsList.filter((component) => {
-        return component.type?.__name === 'fore'
+        return component.type?.__name === "fore"
     })
 })
 const aftComponents = computed(() => {
@@ -142,7 +140,7 @@ const aftComponents = computed(() => {
     }
 
     return componentsList.filter((component) => {
-        return component.type?.__name === 'aft'
+        return component.type?.__name === "aft"
     })
 })
 const loaderComponents = computed(() => {
@@ -155,16 +153,16 @@ const loaderComponents = computed(() => {
     }
 
     return componentsList.filter((component) => {
-        return component.type?.__name === 'loader'
+        return component.type?.__name === "loader"
     })
 })
-
-
 
 function toggleDrop() {
     dropActive.value = !dropActive.value
 }
-
+function closeDrop() {
+    dropActive.value = false
+}
 // console.log(dropComponents.value[0].props)
 </script>
 
@@ -185,9 +183,9 @@ function toggleDrop() {
     user-select: none
     color: inherit
     font-size: 1rem
-    
+
     &:active
-        transform: translate(1px, 1px)  
+        transform: translate(1px, 1px)
 
     &.primary
         background: #007bff
@@ -260,8 +258,4 @@ function toggleDrop() {
         &:hover
             background: lighten(#343a40, 10%)
             border-color: lighten(#343a40, 10%)
-
-.drop
-    position: absolute
-    background: pink
 </style>
