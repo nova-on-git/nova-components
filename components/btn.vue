@@ -56,10 +56,10 @@ const slots = useSlots()
 const dropActive = ref(false)
 
 const props = defineProps<{
-    compId: "btn"
+    compId?: "btn"
 
     to?: String
-    preset: "primary" | "secondary" | "success" | "danger" | "info" | "warning" | "light" | "dark"
+    preset?: "primary" | "secondary" | "success" | "danger" | "info" | "warning" | "light" | "dark"
     useParentSlots?: {
         type: Boolean
         default: false
