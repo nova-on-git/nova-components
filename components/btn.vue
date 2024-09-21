@@ -1,5 +1,5 @@
 <template>
-    <button @click="handleClick()" class="btn" :class="preset">
+    <button ref="btn" @click="handleClick()" class="btn" :class="preset">
         <anchor v-show="false" :to="props.to" />
         <!-- Loader -->
         <component
@@ -50,6 +50,7 @@
 <script setup lang="ts">
 import { toggleModal } from "../composables/modal"
 import { onClickOutside } from "@vueuse/core"
+const btn = ref(null)
 const drop = ref(null)
 const router = useRouter()
 const slots = useSlots()
@@ -58,18 +59,18 @@ const dropActive = ref(false)
 const props = defineProps<{
     compId?: "btn"
 
-    to?: String
+    to?: string
     preset?: "primary" | "secondary" | "success" | "danger" | "info" | "warning" | "light" | "dark"
     useParentSlots?: {
-        type: Boolean
+        type: boolean
         default: false
     }
 
     // Toggles a given ID //
-    modal?: String
+    modal?: string
 
     loading?: {
-        type: Boolean
+        type: boolean
         default: false
     }
 }>()
@@ -85,7 +86,30 @@ function handleClick() {
         router.push(props.to)
     }
 }
-onClickOutside(drop, () => [closeDrop()])
+
+const clickOutsideBtn = ref(false)
+const clickOutsideDrop = ref(false)
+
+onClickOutside(btn, () => {
+    clickOutsideBtn.value = true
+    setTimeout(() => {
+        clickOutsideBtn.value = false
+    }, 0)
+})
+
+onClickOutside(drop, () => {
+    clickOutsideDrop.value = true
+    setTimeout(() => {
+        clickOutsideDrop.value = false
+    }, 0)
+})
+
+watch([clickOutsideBtn, clickOutsideDrop], ([btnClicked, dropClicked]) => {
+    if (btnClicked && dropClicked) {
+        closeDrop()
+    }
+})
+
 const components = computed(() => {
     // Get the list of components from slots
     let componentsList = props.useParentSlots
@@ -185,7 +209,7 @@ function closeDrop() {
     font-size: 1rem
 
     &:active
-        transform: translate(1px, 1px)
+        transform: translate(0.5px, 0.5px)
 
     &.primary
         background: #007bff
