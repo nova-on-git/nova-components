@@ -37,6 +37,7 @@
 
         <!-- Drop -->
         <component
+            @click.stop
             class="drop"
             ref="drop"
             v-show="!props.loading && dropActive"
@@ -87,28 +88,18 @@ function handleClick() {
     }
 }
 
-const clickOutsideBtn = ref(false)
-const clickOutsideDrop = ref(false)
+const handleOutsideClick = (event) => {
+    if (!dropActive.value) return
 
-onClickOutside(btn, () => {
-    clickOutsideBtn.value = true
-    setTimeout(() => {
-        clickOutsideBtn.value = false
-    }, 0)
-})
+    const isClickInsideButton = btn.value && btn.value.contains(event.target)
 
-onClickOutside(drop, () => {
-    clickOutsideDrop.value = true
-    setTimeout(() => {
-        clickOutsideDrop.value = false
-    }, 0)
-})
-
-watch([clickOutsideBtn, clickOutsideDrop], ([btnClicked, dropClicked]) => {
-    if (btnClicked && dropClicked) {
+    if (!isClickInsideButton) {
+        console.log("detect")
         closeDrop()
     }
-})
+}
+
+onClickOutside(btn, handleOutsideClick)
 
 const components = computed(() => {
     // Get the list of components from slots
@@ -187,7 +178,6 @@ function toggleDrop() {
 function closeDrop() {
     dropActive.value = false
 }
-// console.log(dropComponents.value[0].props)
 </script>
 
 <style scoped lang="sass">
@@ -208,8 +198,6 @@ function closeDrop() {
     color: inherit
     font-size: 1rem
 
-    &:active
-        transform: translate(0.5px, 0.5px)
 
     &.primary
         background: #007bff
