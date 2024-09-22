@@ -1,5 +1,12 @@
 <template>
-    <button ref="btn" @click="handleClick()" class="btn" :class="preset">
+    <button
+        ref="btn"
+        @click="handleClick()"
+        @mouseover="tooltipActive = true"
+        @mouseleave="tooltipActive = false"
+        class="btn"
+        :class="preset"
+    >
         <anchor v-show="false" :to="props.to" />
         <!-- Loader -->
         <component
@@ -45,17 +52,29 @@
             :is="component"
             :key="index"
         />
+        <!-- Tooltip -->
+        <component
+            @click.stop
+            class="tooltip"
+            ref="tooltip"
+            v-show="!props.loading && tooltipActive"
+            v-for="(component, index) in tooltipComponents"
+            :is="component"
+            :key="index"
+        />
     </button>
 </template>
 
 <script setup lang="ts">
 import { toggleModal } from "../composables/modal"
 import { onClickOutside } from "@vueuse/core"
+
 const btn = ref(null)
 const drop = ref(null)
 const router = useRouter()
 const slots = useSlots()
 const dropActive = ref(false)
+const tooltipActive = ref(false)
 
 const props = defineProps<{
     compId?: "btn"
@@ -113,11 +132,25 @@ const components = computed(() => {
             component.type?.__name === "fore" ||
             component.type?.__name === "aft" ||
             component.type?.__name === "loader" ||
-            component.type?.__name === "drop"
+            component.type?.__name === "drop" ||
+            component.type?.__name === "tooltip"
         )
     })
 
     return filteredComponents
+})
+const tooltipComponents = computed(() => {
+    let componentsList
+
+    if (props.useParentSlots) {
+        componentsList = slots.default()[0]?.children || []
+    } else {
+        componentsList = slots.default() || []
+    }
+
+    return componentsList.filter((component) => {
+        return component.type?.__name === "tooltip"
+    })
 })
 const dropComponents = computed(() => {
     let componentsList
