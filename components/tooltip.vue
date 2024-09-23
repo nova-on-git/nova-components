@@ -13,14 +13,22 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
-    id: "tooltip"
-
-    left: boolean
-    top: boolean
-    bottom: boolean
-    right: boolean
-}>()
+const props = withDefaults(
+    defineProps<{
+        id?: string
+        left?: boolean
+        top?: boolean
+        bottom?: boolean
+        right?: boolean
+    }>(),
+    {
+        id: "tooltip", // Default ID value
+        left: false,
+        top: false,
+        bottom: false,
+        right: false,
+    }
+)
 </script>
 
 <style lang="sass" scoped>
