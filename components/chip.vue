@@ -1,19 +1,22 @@
 <template>
-    <mflex :class="type" class="chip" >
+    <mflex :class="type" class="chip">
         <slot />
     </mflex>
 </template>
 
-<script setup>
-const props = defineProps({
-    type: {
-        type: String,
-        default: ""
-    }
+<script>
+import { defineComponent } from "vue"
+
+/** This is my nice component documentation */
+export default defineComponent({
+    name: "chip",
+    setup() {
+        // your code
+    },
 })
 </script>
 
-<style lang='sass' scoped>
+<style lang="sass" scoped>
 .chip
     font-size: 1.1rem
 

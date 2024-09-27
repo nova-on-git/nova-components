@@ -1,11 +1,11 @@
 <template>
-    <div 
+    <div
         class="drop"
         :class="{
-            'bottom': props.bottom,
-            'top': props.top,
-            'right': props.right,
-            'left': props.left,
+            bottom: props.bottom,
+            top: props.top,
+            right: props.right,
+            left: props.left,
         }"
     >
         <slot />
@@ -18,11 +18,11 @@ const props = defineProps({
     left: Boolean,
     top: Boolean,
     right: Boolean,
-    bottom: Boolean
+    bottom: Boolean,
 })
 </script>
 
-<style lang='sass' scoped>
+<style lang="sass" scoped>
 .drop
     position: absolute
     z-index: 10
@@ -38,7 +38,7 @@ const props = defineProps({
         transform: translateY(-50%)
 
     &.bottom
-        top: 100% 
+        top: 100%
         left: 50%
         transform: translateX(-50%)
 
@@ -46,5 +46,4 @@ const props = defineProps({
         top: 50%
         right: 100%
         transform: translateY(-50%)
-
 </style>

@@ -79,6 +79,7 @@ const tooltipActive = ref(false)
 const props = defineProps<{
     compId?: "btn"
 
+    /** A router link */
     to?: string
     preset?: "primary" | "secondary" | "success" | "danger" | "info" | "warning" | "light" | "dark"
     useParentSlots?: {
