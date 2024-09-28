@@ -1,3 +1,19 @@
+<!-- @PopDoc 
+Adds extra functionality to the `<button>` tag.
+ 
+#### Slots 
+```html 
+<btn>
+    <fore /> 
+    <slot /> 
+    <aft /> 
+    <loader /> // allows you to override the default loading component.
+    <drop /> // A drop down component, activated on click.
+    <tooltip /> // A tooltip, activated on hover.
+</btn>
+ ``` 
+ -->
+
 <template>
     <button
         ref="btn"
@@ -75,26 +91,37 @@ const router = useRouter()
 const slots = useSlots()
 const dropActive = ref(false)
 const tooltipActive = ref(false)
-
-const props = defineProps<{
+export defineComponent({
+  name: 'Btn',
+  props: {
+    label: {
+      type: String,
+      required: true,
+    },
+    preset: {
+      type: String,
+      default: 'primary',
+    },
+  },
+});
+interface Props {
     compId?: "btn"
 
     /** A router link */
     to?: string
-    preset?: "primary" | "secondary" | "success" | "danger" | "info" | "warning" | "light" | "dark"
-    useParentSlots?: {
-        type: boolean
-        default: false
-    }
 
-    // Toggles a given ID //
+    /** Preset styles for the button */
+    preset?: "primary" | "secondary" | "success" | "danger" | "info" | "warning" | "light" | "dark"
+    useParentSlots?: boolean
+
+    /** Toggles a modal with a given ID */
     modal?: string
 
-    loading?: {
-        type: boolean
-        default: false
-    }
-}>()
+    /** Loading state */
+    loading?: boolean
+}
+
+const props = defineProps<Props>()
 
 function handleClick() {
     toggleDrop()
