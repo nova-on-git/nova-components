@@ -13,6 +13,8 @@
 </template>
 
 <script setup lang="ts">
+const slots = useSlots()
+
 const props = withDefaults(
     defineProps<{
         id?: string

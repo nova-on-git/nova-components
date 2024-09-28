@@ -1,10 +1,8 @@
 <template>
-  <div class="cursor" :class="type" :style="{top: `${y}px`, left: `${x}px`}" />
+    <div class="cursor" :class="type" :style="{ top: `${y}px`, left: `${x}px` }" />
 </template>
 
-
 <script setup>
-
 const mouseX = ref(0)
 const mouseY = ref(0)
 const scrollX = ref(0)
@@ -15,7 +13,7 @@ const y = ref(0)
 const props = defineProps({
     type: {
         type: String,
-        default: ""
+        default: "",
     },
 })
 
@@ -37,20 +35,18 @@ const updateMouse = (e) => {
 }
 
 onMounted(() => {
-    updateScroll() // Initialize the scroll position
-    window.addEventListener('scroll', updateScroll)
-    window.addEventListener('mousemove', updateMouse)
+    updateScroll()
+    window.addEventListener("scroll", updateScroll)
+    window.addEventListener("mousemove", updateMouse)
 })
 
-// Clean up event listener when component is unmounted
 onUnmounted(() => {
-    window.removeEventListener('scroll', updateScroll)
-    window.removeEventListener('mousemove', updateMouse)
+    window.removeEventListener("scroll", updateScroll)
+    window.removeEventListener("mousemove", updateMouse)
 })
 </script>
 
-
-<style lang='sass'>
+<style lang="sass">
 .cursor
     position: absolute
     pointer-events: none
@@ -64,5 +60,4 @@ onUnmounted(() => {
         height: 500px
         width: 500px
         -webkit-filter: blur(100px)
-
 </style>

@@ -1,6 +1,7 @@
 <template>
     <main>
-        <chip></chip>
+        <field> </field>
+        <Aft></Aft>
     </main>
 </template>
 
