@@ -1,20 +1,20 @@
-<!-- @PopDoc 
+<template>
+    <!-- @Nova 
 Adds extra functionality to the `<button>` tag.
  
 #### Slots 
-```html 
+```
 <btn>
     <fore /> 
     <slot /> 
     <aft /> 
-    <loader /> // allows you to override the default loading component.
-    <drop /> // A drop down component, activated on click.
-    <tooltip /> // A tooltip, activated on hover.
+    <loader /> 
+    <drop /> 
+    <tooltip /> 
 </btn>
+
  ``` 
  -->
-
-<template>
     <button
         ref="btn"
         @click="handleClick()"
@@ -91,19 +91,7 @@ const router = useRouter()
 const slots = useSlots()
 const dropActive = ref(false)
 const tooltipActive = ref(false)
-export defineComponent({
-  name: 'Btn',
-  props: {
-    label: {
-      type: String,
-      required: true,
-    },
-    preset: {
-      type: String,
-      default: 'primary',
-    },
-  },
-});
+
 interface Props {
     compId?: "btn"
 
@@ -135,7 +123,7 @@ function handleClick() {
     }
 }
 
-const handleOutsideClick = (event) => {
+const handleOutsideClick = (event: Event) => {
     if (!dropActive.value) return
 
     const isClickInsideButton = btn.value && btn.value.contains(event.target)

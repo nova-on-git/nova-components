@@ -1,8 +1,10 @@
 <template>
-    <main>
-        <field> </field>
-        <Aft></Aft>
-    </main>
+    <div></div>
+
+    <rflex></rflex>
+    <btn></btn>
+
+    <div></div>
 </template>
 
 <script setup lang="ts"></script>
