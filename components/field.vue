@@ -1,68 +1,60 @@
-<!-- @PopDoc
- # Field  wafafddddwwwaaddawdsdxda
- A description of the component, how it works, and what it's used for. Describe @important things that the user should know about the component. 
- 
- ## Props 
- /** 
-  * The `exampleProp` prop is an example of a prop that you can pass to the component. Use this format to describe the prop. 
-  */ 
- exampleProp?: string; 
- 
- ## Emits 
- - exampleEmit: (value: any) => void. emitted when an example event happens 
- 
- ## Slots 
- - example list of slotfffffffffs 
- 
- ## Examples 
- ```vue 
-<script lang="ts" setup> 
- 
-</script> 
- 
-<template>
- <div>Test</div> 
-</template> 
- ``` 
- 
+<!-- @Nova
+### Field 
+A drop in replacement for the input tag.
+
+Pass a validation function to the component for automatic error state handling.
+
  -->
 <template>
     <div class="field" :class="{ error: error }">
-        to="../../veloris-cms/components"
-        <input v-bind="$attrs" @input="handleInput" @blur="handleBlur" v-model="modelValue" />{{
-            error
-        }}
+        <input v-bind="$attrs" @input="handleInput" @blur="handleBlur" v-model="modelValue" />
+
+        <!-- Error -->
+        <component
+            class="error-component"
+            v-if="error"
+            v-for="(component, index) in errorComponents"
+            :is="component"
+            :key="index"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
-const modelValue = ref("")
 const error = ref<boolean>(false)
-// Define the props interface
+const slots = useSlots()
+
 interface Props {
-    /** Validator function for the input. */
+    /** Validator function to handle error state */
     validator?: (value: string) => boolean
 
     /** Defines when the validation function will run. */
     validateOn?: "input" | "blur"
+
+    modelValue: string
 }
 
-// Define the emit types
 interface Emits {
-    /** Emit an event when the model value changes. */
     (event: "update:modelValue", value: string): void
-    /** Emit an event when the error state changes. */
+
+    /** Hook for error state */
     (event: "update:error", error: boolean): void
 }
-// Define props using the Props interface
-const props = defineProps<Props>()
 
-// Define emits using the Emits interface
+const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
+const modelValue = ref(props.modelValue)
 
 watch(error, (newValue) => {
     emit("update:error", newValue)
 })
+
+watch(
+    () => props.modelValue,
+    (newVal) => {
+        modelValue.value = newVal
+    }
+)
 
 function handleBlur() {
     if (!props.validator) return
@@ -83,16 +75,52 @@ function handleInput() {
         error.value = props.validator(modelValue.value)
     }
 }
+
+const components = computed(() => {
+    // Get the list of components from slots
+    if (!slots.default || typeof slots.default !== "function") return []
+
+    // Get the components from the default slot, which should return an array of VNodes
+    const componentsList = slots.default() as VNode[]
+
+    // Define the types you want to filter out
+    const excludedTypes = ["fore", "aft", "loader", "drop", "tooltip"]
+
+    // Filter out specific components based on their type.__name
+    const filteredComponents = componentsList.filter((component: VNode) => {
+        const name = component.type && (component.type as any).__name
+        return !excludedTypes.includes(name)
+    })
+
+    return filteredComponents
+})
+
+const errorComponents = computed(() => {
+    if (!slots.default || typeof slots.default !== "function") return []
+    const componentsList = slots.default() as VNode[]
+
+    return componentsList.filter((component) => {
+        return component.type.__name === "error"
+    })
+})
 </script>
 
 <style lang="sass" scoped>
 
 .field
-    margin: 50px
+    position: relative
     input
-        background: inherit
+        width: 100%
+        background: transparent
 
+        &:focus
+            outline: none
 
     &.error
-        outline: 1px solid rgba(255, 0, 0, 0.4)
+        outline: 1px solid rgba(230, 0, 0, 0.8)
+
+:deep(.error-component)
+    position: absolute !important
+    bottom: -30px !important
+    left: 0px
 </style>

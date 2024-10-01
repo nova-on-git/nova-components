@@ -1,23 +1,23 @@
-<template>
-    <!-- @Nova 
+<!-- @Nova 
 Adds extra functionality to the `<button>` tag.
- 
+
 #### Slots 
 ```
 <btn>
-    <fore /> 
-    <slot /> 
-    <aft /> 
-    <loader /> 
-    <drop /> 
-    <tooltip /> 
+<fore /> 
+<slot /> 
+<aft /> 
+<loader /> 
+<drop /> 
+<tooltip /> 
 </btn>
 
 
 
 
- ``` 
- -->
+``` 
+-->
+<template>
     <button
         ref="btn"
         @click="handleClick()"
