@@ -1,3 +1,11 @@
+<!-- @Nova 
+### Search
+A quick search input.
+
+To change the background color use :deep(.search)
+ --> 
+
+
 <template>
     <div class="search" :class="{ inputTrue: searchQuery }">
         <Icon icon="material-symbols:search" width="20" color="#777" />
@@ -17,13 +25,17 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { Icon } from "@iconify/vue"
 const searchQuery = ref("")
-const props = defineProps({
-    id: "search",
-    modelValue: String,
-})
+
+interface Props {
+    id: string
+    modelValue: string
+}
+
+const props = defineProps<Props>()
+
 
 const emit = defineEmits(["update:modelValue"])
 
@@ -51,11 +63,15 @@ const clearSearch = () => {
 
     &.inputTrue
         width: 260px
+
     input
         background: inherit
         padding-inline: 5px
         padding-block: 2px
         margin: 3px
+        border: none !important
+        outline: none
+
         &:focus
             outline: none
 
@@ -67,6 +83,7 @@ const clearSearch = () => {
         cursor: pointer
         &:hover
             background: rgba(0, 0, 0, 0.05)
+
 input[type="search"]::-webkit-search-cancel-button
     -webkit-appearance: none
 </style>
