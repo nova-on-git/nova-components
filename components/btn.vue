@@ -256,70 +256,42 @@ function closeDrop() {
         border-color: #007bff
         color: white
 
-        &:hover
-            background: lighten(#007bff, 10%)
-            border-color: lighten(#007bff, 10%)
+
 
     &.secondary
         background: #6c757d
         border-color: #6c757d
         color: white
 
-        &:hover
-            background: lighten(#6c757d, 10%)
-            border-color: lighten(#6c757d, 10%)
+
 
     &.success
         background: #28a745
         border-color: #28a745
         color: white
 
-        &:hover
-            background: lighten(#28a745, 10%)
-            border-color: lighten(#28a745, 10%)
-
     &.danger
         background: #dc3545
         border-color: #dc3545
         color: white
-
-        &:hover
-            background: lighten(#dc3545, 10%)
-            border-color: lighten(#dc3545, 10%)
 
     &.warning
         background: #ffc107
         border-color: #ffc107
         color: black
 
-        &:hover
-            background: lighten(#ffc107, 10%)
-            border-color: lighten(#ffc107, 10%)
-
     &.info
         background: #17a2b8
         border-color: #17a2b8
         color: white
-
-        &:hover
-            background: lighten(#17a2b8, 10%)
-            border-color: lighten(#17a2b8, 10%)
 
     &.light
         background: #f8f9fa
         border-color: #f8f9fa
         color: black
 
-        &:hover
-            background: lighten(#f8f9fa, 10%)
-            border-color: lighten(#f8f9fa, 10%)
-
     &.dark
         background: #343a40
         border-color: #343a40
         color: white
-
-        &:hover
-            background: lighten(#343a40, 10%)
-            border-color: lighten(#343a40, 10%)
 </style>
