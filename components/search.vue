@@ -30,7 +30,7 @@ import { Icon } from "@iconify/vue"
 const searchQuery = ref("")
 
 interface Props {
-    id: string
+    propId: "search"
     modelValue: string
 }
 
